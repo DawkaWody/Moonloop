@@ -66,7 +66,7 @@ public class PlayerMovementController : MonoBehaviour
     private void Update()
     {
         if (!canMove) {
-            _animationController.AnimateMovement(false, false);
+            _animationController.AnimateMovement(false);
             return;
         }
 
@@ -118,14 +118,14 @@ public class PlayerMovementController : MonoBehaviour
             TurnCheck(moveInput);
 
             Vector2 targetVelocity = new Vector2(moveInput.x, 0f) * _movementStats.MaxWalkSpeed;
-            _animationController.AnimateMovement(true, false);
+            _animationController.AnimateMovement(true);
 
             _moveVelocity = Vector2.Lerp(_moveVelocity, targetVelocity, acceleration * Time.fixedDeltaTime);
         }
         else
         {
             _moveVelocity = Vector2.Lerp(_moveVelocity, Vector2.zero, decceleration * Time.fixedDeltaTime);
-            _animationController.AnimateMovement(false, false);
+            _animationController.AnimateMovement(false);
         }
 
         _rigidbody.linearVelocity = new Vector2(_moveVelocity.x, _rigidbody.linearVelocityY);

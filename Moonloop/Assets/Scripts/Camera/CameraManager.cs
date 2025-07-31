@@ -7,7 +7,6 @@ public class CameraManager : MonoBehaviour
     public static CameraManager Instance { get; private set; }
 
     [SerializeField] private CinemachineCamera _singleplayerCamera;
-    [SerializeField] private CinemachineCamera _multiplayerCamera;
 
     [Header("Player jump/fall camera controls")]
     [SerializeField] private float _fallPanAmount = 0.25f;
@@ -25,7 +24,6 @@ public class CameraManager : MonoBehaviour
 
     private CinemachineCamera _activeCamera;
     private CinemachinePositionComposer _positionComposer;
-    private CinemachineTargetGroup _targetGroup;
 
     private void Awake()
     {
@@ -40,11 +38,8 @@ public class CameraManager : MonoBehaviour
 
         _activeCamera = _singleplayerCamera;
         _positionComposer = _activeCamera.GetComponent<CinemachinePositionComposer>();
-        _targetGroup = _multiplayerCamera.GetComponent<CinemachineCamera>().Target.TrackingTarget.GetComponent<CinemachineTargetGroup>();
 
         _normYPanAmount = _positionComposer.Damping.y;
-
-        _multiplayerCamera.gameObject.SetActive(false);
     }
 
     #region Lerp Y Damping
@@ -115,35 +110,4 @@ public class CameraManager : MonoBehaviour
 
     #endregion
 
-    #region Camera switching
-
-    public void ChangeCameraToSingleplayer()
-    {
-        if (_activeCamera == _singleplayerCamera) return;
-        _activeCamera.gameObject.SetActive(false);
-        _singleplayerCamera.gameObject.SetActive(true);
-        _activeCamera = _singleplayerCamera;
-        _positionComposer = _activeCamera.GetComponent<CinemachinePositionComposer>();
-    }
-
-    public void ChangeCameraToMultiplayer()
-    {
-        if (_activeCamera == _multiplayerCamera) return;
-        _activeCamera.gameObject.SetActive(false);
-        _multiplayerCamera.gameObject.SetActive(true);
-        _activeCamera = _multiplayerCamera;
-        _positionComposer = _activeCamera.GetComponent<CinemachinePositionComposer>();
-    }
-
-    public void SetPlayerTarget(Transform player)
-    {
-        _singleplayerCamera.Target.TrackingTarget.GetComponent<CameraPlayerFollow>().SetTarget(player);
-    }
-
-    public void AddPlayerTarget(Transform player)
-    {
-        _targetGroup.AddMember(player, 1f, 1f);
-    }
-
-    #endregion
 }

@@ -5,7 +5,6 @@ public class PlayerAnimationController : MonoBehaviour
 {
     [Header("Animator Parameters")]
     [SerializeField] private string _movingBoolName = "isMoving";
-    [SerializeField] private string _runningBoolName = "isRunning";
     [SerializeField] private string _landTriggerName = "land";
     [SerializeField] private string _jumpTriggerName = "jump";
 
@@ -14,7 +13,6 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private string _inAirStateName = "InAir";
 
     private int _movingBoolId;
-    private int _runningBoolId;
     private int _landTriggerId;
     private int _jumpTriggerId;
 
@@ -25,15 +23,13 @@ public class PlayerAnimationController : MonoBehaviour
         _animator = GetComponent<Animator>();
 
         _movingBoolId = Animator.StringToHash(_movingBoolName);
-        _runningBoolId = Animator.StringToHash(_runningBoolName);
         _landTriggerId = Animator.StringToHash(_landTriggerName);
         _jumpTriggerId = Animator.StringToHash(_jumpTriggerName);
     }
 
-    public void AnimateMovement(bool isMoving, bool isRunning)
+    public void AnimateMovement(bool isMoving)
     {
         _animator.SetBool(_movingBoolId, isMoving);
-        _animator.SetBool(_runningBoolId, isRunning);
     }
 
     public void InitiateJump()
@@ -50,10 +46,5 @@ public class PlayerAnimationController : MonoBehaviour
     {
         AnimatorStateInfo state = _animator.GetCurrentAnimatorStateInfo(0);
         return state.IsName(_jumpStateName) || state.IsName(_inAirStateName);
-    }
-
-    public void ActivateLayer(int layerIdx)
-    {
-        _animator.SetLayerWeight(layerIdx, 1);
     }
 }
