@@ -1821,9 +1821,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 233a001556339b240a2558fb959a98ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  platformGroups:
+  _platformGroups:
   - {fileID: 1545652746}
   - {fileID: 1446679958}
+  _alphaOnInactive: 0.4
+  _alphaLerpTime: 0.3
 --- !u!4 &1109681512
 Transform:
   m_ObjectHideFlags: 0
