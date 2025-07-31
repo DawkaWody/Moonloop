@@ -5,12 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(CinemachineImpulseSource))]
 public class LunarStone : MonoBehaviour, IInteractable
 {
+    private bool _activated;
+
     private Animator _animator;
     private CinemachineImpulseSource _impulseSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _activated = false;
+
         _animator = GetComponent<Animator>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
     }
@@ -21,10 +25,12 @@ public class LunarStone : MonoBehaviour, IInteractable
         
     }
 
-    public void Interact()
+    public void Interact(Transform player)
     {
-        Debug.Log("Lunar Stone Interacted with!");
+        if (_activated) return;
+        player.GetComponent<PlayerDeathController>().SetCheckpoint(transform);
         _animator.SetTrigger("activate");
         CameraManager.Instance.CameraShake(_impulseSource);
+        _activated = true;
     }
 }

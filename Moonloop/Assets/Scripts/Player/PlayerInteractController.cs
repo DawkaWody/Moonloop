@@ -23,7 +23,7 @@ public class PlayerInteractController : MonoBehaviour
             Vector2 interactPoint = new Vector2(_interactPoint.position.x, _interactPoint.position.y);
             foreach (Collider2D hit in Physics2D.OverlapCircleAll(interactPoint, _interactRadius))
             {
-                if (hit.TryGetComponent(out IInteractable interaction)) interaction.Interact();
+                if (hit.TryGetComponent(out IInteractable interaction)) interaction.Interact(transform);
             }
         }
     }
