@@ -50,5 +50,5 @@ MonoBehaviour:
   - {fileID: 6983691245366796388, guid: 201a0e777a7093248bc77fe70414b2f2, type: 3}
   - {fileID: 8564103508174492480, guid: 4b076d56039b5b447b66f708be255d96, type: 3}
   - {fileID: 5126346147261496148, guid: 06de98c3d6db5064197537c50bc37b9e, type: 3}
-  numberOfStars: 50
-  spawnArea: {x: 36, y: 20}
+  numberOfStars: 25
+  spawnArea: {x: 36, y: 22}
