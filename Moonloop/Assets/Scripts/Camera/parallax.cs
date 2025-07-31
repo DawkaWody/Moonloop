@@ -7,13 +7,22 @@ public class Parallax : MonoBehaviour
     [SerializeField] private GameObject _camera;
     [SerializeField] private float parallaxEffectX;
     [SerializeField] private float parallaxEffectY;
+    [SerializeField] private float manualLengthX;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         startPosX = transform.position.x;
         startPosY = transform.position.y;
-        lengthX = GetComponent<SpriteRenderer>().bounds.size.x;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            lengthX = sr.bounds.size.x;
+        }
+        else if (manualLengthX > 0f)
+        {
+            lengthX = manualLengthX;
+        }
     }
 
     // Update is called once per frame
