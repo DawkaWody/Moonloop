@@ -44,5 +44,13 @@ public class Moon : MonoBehaviour
     {
         _platformManager.NextGroup();
         _currentPhase++;
+        if (_currentPhase >= _maxPhases) _currentPhase = 0;
+    }
+
+    public void PreviousPhase()
+    {
+        _platformManager.PreviousGroup();
+        _currentPhase--;
+        if (_currentPhase < 0) _currentPhase = _maxPhases - 1;
     }
 }

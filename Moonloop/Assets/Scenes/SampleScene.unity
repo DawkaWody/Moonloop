@@ -1291,7 +1291,7 @@ MonoBehaviour:
   _phaseDuration: 4
   _maxPhases: 3
   _platformManager: {fileID: 1109681511}
-  cycle: 0
+  cycle: 1
 --- !u!1 &1144389129
 GameObject:
   m_ObjectHideFlags: 0
@@ -2566,11 +2566,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.332
+      value: 0.36918736
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.16
+      value: 1.0020001
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2582,15 +2582,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

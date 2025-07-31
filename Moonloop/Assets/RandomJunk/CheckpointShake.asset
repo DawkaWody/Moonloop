@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: edfaf912cc433ee40afc7bb39cf816b9, type: 3}
-  m_Name: SkibidiShake
+  m_Name: CheckpointShake
   m_EditorClassIdentifier: 
-  impulseTime: 0.2
+  impulseTime: 0.6
   impulseForce: 1.4
-  defaultVelocity: {x: 0, y: -0.5, z: 0}
+  defaultVelocity: {x: 0, y: -0.3, z: 0}
   impulseCurve:
     serializedVersion: 2
     m_Curve:
