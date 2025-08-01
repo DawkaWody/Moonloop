@@ -5,15 +5,21 @@ using UnityEngine.Tilemaps;
 
 public class PlatformManager : MonoBehaviour
 {
-    [SerializeField] private Transform[] _platforms;
+    [SerializeField] private Platform[] _platforms;
     [SerializeField] private float _alphaOnInactive = 0.4f;
     [SerializeField] private float _alphaLerpTime = 0.3f;
+
+    private Transform[] _platformTransforms;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        foreach (Transform platform in _platforms)
-            Deactivate(platform);
+        _platformTransforms = new Transform[_platforms.Length];
+        for (int i = 0; i < _platforms.Length; i++)
+        {
+            _platformTransforms[i] = _platforms[i].transform;
+            Deactivate(_platformTransforms[i]);
+        }
     }
 
     public void Activate(Transform platform)

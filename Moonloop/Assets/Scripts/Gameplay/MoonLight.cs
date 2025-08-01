@@ -77,7 +77,8 @@ public class MoonLight : MonoBehaviour
         foreach (Collider2D platform in platforms)
         {
             if (platform.transform == _excludedPlatforms || platform.transform.IsChildOf(_excludedPlatforms)) continue;
-
+            
+            Platform platformData = platform.GetComponent<Platform>();
             Vector3 direction = platform.transform.position - transform.position;
             if (Vector3.Angle(transform.up, direction) <= _light.pointLightOuterAngle / 2)
             {
@@ -90,13 +91,28 @@ public class MoonLight : MonoBehaviour
                     if (hitCollider != null && hitCollider.transform != platform.transform) blockedByObstacle = true;
                 }
                 
-                if (!blockedByObstacle)
-                    _platformManager.Activate(platform.transform);
-                else
-                    _platformManager.Deactivate(platform.transform);
+                if (!blockedByObstacle) // Lit
+                {
+                    if (platformData.type == PlatformType.Light)
+                        _platformManager.Activate(platform.transform);
+                    else
+                        _platformManager.Deactivate(platform.transform);
+                }
+                else // Unlit
+                {
+                    if (platformData.type == PlatformType.Light)
+                        _platformManager.Deactivate(platform.transform);
+                    else
+                        _platformManager.Activate(platform.transform);
+                }
             }
-            else 
-                _platformManager.Deactivate(platform.transform);
+            else // Unlit
+            {
+                if (platformData.type == PlatformType.Light)
+                    _platformManager.Deactivate(platform.transform);
+                else
+                    _platformManager.Activate(platform.transform);
+            }
         }
     }
 
