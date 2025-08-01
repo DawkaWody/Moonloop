@@ -273,3 +273,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 1
+  unstable: 0
+  _breakingTime: 1

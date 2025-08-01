@@ -29,9 +29,9 @@ public class MoonLight : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        _currentPhase = 0;
+        _currentPhase = 0; // 0 - 1st, 1 - full, 2 - 3rd, 4 - new
         _phaseTimer = 0.0f;
-        _angle = transform.rotation.z - 90;
+        _angle = transform.rotation.z - 45;
         _speed = 360.0f / (_maxPhases * _phaseDuration);
 
         if (!_light) _light = GetComponent<Light2D>();
@@ -73,18 +73,23 @@ public class MoonLight : MonoBehaviour
 
     private void LightDetection()
     {
-        Collider2D[] platforms = Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius, _platformLayer);
-        foreach (Collider2D platform in platforms)
+        foreach (Collider2D platform in Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius,
+                     _platformLayer))
         {
             if (platform.transform == _excludedPlatforms || platform.transform.IsChildOf(_excludedPlatforms)) continue;
             
             Platform platformData = platform.GetComponent<Platform>();
+            if (!platformData) continue;
+            platformData.unstable = _currentPhase is 0 or 2;
+
             Vector3 direction = platform.transform.position - transform.position;
             if (Vector3.Angle(transform.up, direction) <= _light.pointLightOuterAngle / 2)
             {
                 Debug.DrawRay(transform.position, direction.normalized * direction.magnitude, Color.green);
+                
                 bool blockedByObstacle = false;
-                RaycastHit2D[] hitAll = Physics2D.RaycastAll(transform.position, direction.normalized, direction.magnitude, _platformLayer);
+                RaycastHit2D[] hitAll = Physics2D.RaycastAll(transform.position, direction.normalized, 
+                    direction.magnitude, _platformLayer);
                 foreach (RaycastHit2D hit in hitAll)
                 {
                     Collider2D hitCollider = hit.collider;

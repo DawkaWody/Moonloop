@@ -1097,10 +1097,10 @@ MonoBehaviour:
   _icon: {fileID: 1516649261}
   _fill: {fileID: 179390679}
   _icons:
-  - {fileID: -2788449027896958304, guid: c39ae0f026d229248a02919df95771df, type: 3}
   - {fileID: 7741486463632871290, guid: cbeeb9eaf939ffc4095e271efdea590a, type: 3}
   - {fileID: -4064624128027777690, guid: 1b68d24df93167847bd56eed3140af2e, type: 3}
   - {fileID: -7796911682902108431, guid: 14bd475d038059c46a46df26e0c737e3, type: 3}
+  - {fileID: -2788449027896958304, guid: c39ae0f026d229248a02919df95771df, type: 3}
 --- !u!1 &674509935
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1268,7 @@ GameObject:
   m_Component:
   - component: {fileID: 820532233}
   - component: {fileID: 820532232}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FeetColl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1414,13 +1414,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855774239}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.2701, y: -16.3534, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.5, w: 0.8660254}
+  m_LocalPosition: {x: 15.86, y: -8.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1109681512}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 60}
 --- !u!114 &855774242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1507,7 +1507,7 @@ GameObject:
   m_Component:
   - component: {fileID: 950924418}
   - component: {fileID: 950924419}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BodyColl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2420,7 +2420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1106829377}
   - component: {fileID: 1106829378}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3536,7 +3536,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2082802663}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: InteractPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3621,7 +3621,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2107037311}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Colliders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3664,9 +3664,9 @@ GameObject:
   - component: {fileID: 2115516419}
   - component: {fileID: 2115516425}
   - component: {fileID: 2115516426}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PLAYER
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3891,9 +3891,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interactPoint: {fileID: 2082802663}
   _interactRadius: 0.51
+  _platformDetectionHeight: 1
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 64
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!114 &2115516425
 MonoBehaviour:
   m_ObjectHideFlags: 0
