@@ -3965,7 +3965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdb89434c25e34c43bece133d112f299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dissolveTime: 0.75
+  _dissolveTime: 0.5
 --- !u!1001 &649812390718993421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4017,18 +4017,6 @@ PrefabInstance:
     - target: {fileID: 2978891628659790493, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9011833740521539280, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
-      propertyPath: _activatedGlow.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9011833740521539280, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
-      propertyPath: _activatedGlow.b
-      value: 11.545098
-      objectReference: {fileID: 0}
-    - target: {fileID: 9011833740521539280, guid: b48772529ebbabc499f04eed4f19e966, type: 3}
-      propertyPath: _activatedGlow.g
-      value: 11.984314
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
