@@ -4,46 +4,27 @@ using UnityEngine.Tilemaps;
 
 public class PlatformManager : MonoBehaviour
 {
-    [SerializeField] private Transform[] _platformGroups;
+    [SerializeField] private Transform[] _platforms;
     [SerializeField] private float _alphaOnInactive = 0.4f;
     [SerializeField] private float _alphaLerpTime = 0.3f;
-    private int _currentGroup = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = _currentGroup + 1; i < _platformGroups.Length; i++)
-            Deactivate(_platformGroups[i]);
+        foreach (Transform platform in _platforms)
+            Deactivate(platform);
     }
 
-    public void NextGroup()
+    public void Activate(Transform platform)
     {
-        Deactivate(_platformGroups[_currentGroup]);
-        _currentGroup++;
-        if (_currentGroup >= _platformGroups.Length) _currentGroup = 0;
-        Activate(_platformGroups[_currentGroup]);
+        StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), 1.0f));
+        platform.GetComponent<TilemapCollider2D>().enabled = true;
     }
 
-    public void PreviousGroup()
+    public void Deactivate(Transform platform)
     {
-        Deactivate(_platformGroups[_currentGroup]);
-        _currentGroup--;
-        if (_currentGroup < 0) _currentGroup = _platformGroups.Length - 1;
-        Activate(_platformGroups[_currentGroup]);
-    }
-
-    private void Activate(Transform platformGroup)
-    {
-        Color baseColor = platformGroup.GetComponent<Tilemap>().color;
-        StartCoroutine(LerpAlphaCo(platformGroup.GetComponent<Tilemap>(), 1.0f));
-        platformGroup.GetComponent<TilemapCollider2D>().enabled = true;
-    }
-
-    private void Deactivate(Transform platformGroup)
-    {
-        Color baseColor = platformGroup.GetComponent<Tilemap>().color;
-        StartCoroutine(LerpAlphaCo(platformGroup.GetComponent<Tilemap>(), _alphaOnInactive));
-        platformGroup.GetComponent<TilemapCollider2D>().enabled = false;
+        StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
+        platform.GetComponent<TilemapCollider2D>().enabled = false;
     }
 
     IEnumerator LerpAlphaCo(Tilemap tilemap, float to)

@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
+[RequireComponent(typeof(Light2D))]
 public class Moon : MonoBehaviour
 {
     public static Moon Instance { get; private set; }
@@ -8,10 +10,18 @@ public class Moon : MonoBehaviour
     [SerializeField] private float _phaseDuration = 4.0f;
     [SerializeField] private int _maxPhases;
     [SerializeField] private PlatformManager _platformManager;
+    [SerializeField] private Transform _center;
+    [SerializeField] private float _radius;
+    [SerializeField] private LayerMask _platformLayer;
     [SerializeField] private bool cycle;
+    [SerializeField] private Light2D _light;
 
     private int _currentPhase;
     private float _phaseTimer;
+    private float _angle;
+    private float _speed;
+
+    // private Light2D _light;
 
     private void Awake()
     {
@@ -24,6 +34,10 @@ public class Moon : MonoBehaviour
     {
         _currentPhase = 0;
         _phaseTimer = 0.0f;
+        _angle = 0.0f;
+        _speed = 360.0f / (_maxPhases * _phaseDuration);
+
+        _light = GetComponent<Light2D>();
     }
 
     // Update is called once per frame
@@ -31,26 +45,57 @@ public class Moon : MonoBehaviour
     {
         if (!cycle) return;
 
-        _phaseTimer += Time.deltaTime;
-        if (_phaseTimer >= _phaseDuration)
+        _angle += _speed * Time.deltaTime;
+
+        float x = Mathf.Cos(_angle * Mathf.Deg2Rad) * _radius;
+        float y = Mathf.Sin(_angle * Mathf.Deg2Rad) * _radius;
+
+        transform.position = new Vector3(_center.position.x + x, _center.position.y + y, transform.position.z);
+        Vector3 direction = _center.position - transform.position;
+        float angleToCenter = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, angleToCenter - 90));
+        Debug.Log(Physics2D.OverlapCircleAll(_center.position, 200f, _platformLayer).Length);
+        LightDetection();
+    }
+
+    private void LightDetection()
+    {
+        Collider2D[] platforms = Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius, _platformLayer);
+        Debug.Log($"Platforms detected: {platforms.Length}");
+        foreach (Collider2D platform in platforms)
         {
-            _phaseTimer = 0.0f;
-            _currentPhase = (_currentPhase + 1) % _maxPhases;
-            NextPhase();
+            if (platform.name == "Persistent") continue;
+
+            Vector3 direction = platform.transform.position - transform.position;
+            Debug.Log($"{platform.transform.name}: {Vector3.Angle(transform.up, direction)} <= {_light.pointLightOuterAngle / 2}");
+            if (Vector3.Angle(transform.up, direction) <= _light.pointLightOuterAngle / 2)
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, _platformLayer);
+                Debug.Log($"{platform.transform.name} -> {hit.collider}");
+                if (hit.collider == null)
+                {
+                    Debug.Log($"Activating platform: {platform.transform.name}");
+                    _platformManager.Activate(platform.transform);
+                }
+                else
+                {
+                    _platformManager.Deactivate(platform.transform);
+                }
+            }
         }
     }
 
-    public void NextPhase()
+    private void OnDrawGizmos()
     {
-        _platformManager.NextGroup();
-        _currentPhase++;
-        if (_currentPhase >= _maxPhases) _currentPhase = 0;
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(_center.position, _radius);
     }
 
-    public void PreviousPhase()
+    private void OnDrawGizmosSelected()
     {
-        _platformManager.PreviousGroup();
-        _currentPhase--;
-        if (_currentPhase < 0) _currentPhase = _maxPhases - 1;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _light.pointLightOuterRadius);
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, transform.position + transform.up * _light.pointLightOuterRadius);
     }
 }
