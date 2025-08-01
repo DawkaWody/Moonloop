@@ -5,6 +5,7 @@ using UnityEngine;
 public class Timer : MonoBehaviour
 {
     [SerializeField] private TMP_Text _timerText;
+    [SerializeField] private int _milisSize = 50;
 
     private DateTime _startTime;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,8 +18,8 @@ public class Timer : MonoBehaviour
     void Update()
     {
         TimeSpan currentTimer = DateTime.Now - _startTime;
-        String formattedTimer = string.Format("{0:D2}:{1:D2}:{2:D2}",
-            currentTimer.Minutes, currentTimer.Seconds, currentTimer.Milliseconds);
+        String formattedTimer = string.Format("{0:D2}:{1:D2}.<size={2}>{3:D3}</size>",
+            currentTimer.Minutes, currentTimer.Seconds, _milisSize, currentTimer.Milliseconds);
         _timerText.text = formattedTimer;
     }
 }
