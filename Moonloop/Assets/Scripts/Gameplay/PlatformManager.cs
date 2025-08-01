@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -18,13 +19,14 @@ public class PlatformManager : MonoBehaviour
     public void Activate(Transform platform)
     {
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), 1.0f));
-        platform.GetComponent<TilemapCollider2D>().enabled = true;
+        platform.GetComponent<Collider2D>().isTrigger = false;
     }
 
     public void Deactivate(Transform platform)
     {
+
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
-        platform.GetComponent<TilemapCollider2D>().enabled = false;
+        platform.GetComponent<Collider2D>().isTrigger = true;
     }
 
     IEnumerator LerpAlphaCo(Tilemap tilemap, float to)

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -54,34 +53,36 @@ public class Moon : MonoBehaviour
         Vector3 direction = _center.position - transform.position;
         float angleToCenter = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angleToCenter - 90));
-        Debug.Log(Physics2D.OverlapCircleAll(_center.position, 200f, _platformLayer).Length);
+
         LightDetection();
     }
 
     private void LightDetection()
     {
         Collider2D[] platforms = Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius, _platformLayer);
-        Debug.Log($"Platforms detected: {platforms.Length}");
         foreach (Collider2D platform in platforms)
         {
             if (platform.name == "Persistent") continue;
 
             Vector3 direction = platform.transform.position - transform.position;
-            Debug.Log($"{platform.transform.name}: {Vector3.Angle(transform.up, direction)} <= {_light.pointLightOuterAngle / 2}");
             if (Vector3.Angle(transform.up, direction) <= _light.pointLightOuterAngle / 2)
             {
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, direction.normalized, direction.magnitude, _platformLayer);
-                Debug.Log($"{platform.transform.name} -> {hit.collider}");
-                if (hit.collider == null)
+                Debug.DrawRay(transform.position, direction.normalized * direction.magnitude, Color.green);
+                bool blockedByObstacle = false;
+                RaycastHit2D[] hitAll = Physics2D.RaycastAll(transform.position, direction.normalized, direction.magnitude, _platformLayer);
+                foreach (RaycastHit2D hit in hitAll)
                 {
-                    Debug.Log($"Activating platform: {platform.transform.name}");
+                    Collider2D hitCollider = hit.collider;
+                    if (hitCollider != null && hitCollider.transform != platform.transform) blockedByObstacle = true;
+                }
+                
+                if (!blockedByObstacle)
                     _platformManager.Activate(platform.transform);
-                }
                 else
-                {
                     _platformManager.Deactivate(platform.transform);
-                }
             }
+            else 
+                _platformManager.Deactivate(platform.transform);
         }
     }
 
