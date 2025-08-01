@@ -1,0 +1,42 @@
+using System.Collections;
+using UnityEngine;
+
+[RequireComponent(typeof(SpriteRenderer))]
+public class PlayerFxController : MonoBehaviour
+{
+    [SerializeField] private float _dissolveTime = 0.75f;
+
+    private int _dissolveAmountId = Shader.PropertyToID("_Amount");
+
+    private SpriteRenderer _spriteRenderer;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.material.SetFloat(_dissolveAmountId, 1f);
+        Respawn();
+    }
+
+    public void Respawn()
+    {
+        StartCoroutine(DissolveCo(0f));
+    }
+
+    public void Dissolve()
+    {
+        StartCoroutine(DissolveCo(1f));
+    }
+
+    IEnumerator DissolveCo(float to)
+    {
+        float elapsedTime = 0f;
+        float baseDissolve = _spriteRenderer.material.GetFloat(_dissolveAmountId);
+        while (elapsedTime < _dissolveTime)
+        {
+            elapsedTime += Time.deltaTime;
+            _spriteRenderer.material.SetFloat(_dissolveAmountId, Mathf.Lerp(baseDissolve, to, (elapsedTime / _dissolveTime)));
+            yield return null;
+        }
+    }
+}
