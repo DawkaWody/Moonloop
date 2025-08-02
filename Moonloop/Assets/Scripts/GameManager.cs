@@ -31,6 +31,21 @@ public class GameManager : MonoBehaviour
         _currentLevel = 0;
     }
 
+    public bool IsLevelUnlocked(int levelIndex)
+    {
+        if (levelIndex == 0) return true;
+        return PlayerPrefs.GetInt("Level_" + levelIndex, 0) == 1;
+    }
+
+    public void UnlockLevel(int levelIndex)
+    {
+        if (levelIndex >= 0 && levelIndex < _levels.Length)
+        {
+            PlayerPrefs.SetInt("Level_" + levelIndex, 1);
+            PlayerPrefs.Save();
+        }
+    }
+
     public void StartLevel(int levelIndex)
     {
         if (levelIndex < 0 || levelIndex >= _levels.Length)
