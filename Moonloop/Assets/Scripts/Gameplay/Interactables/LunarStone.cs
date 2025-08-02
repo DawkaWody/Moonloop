@@ -13,6 +13,7 @@ public class LunarStone : MonoBehaviour, IInteractable
     [SerializeField] private float _lightIntensityLerpTime = 0.5f;
     [ColorUsage(true, true)]
     [SerializeField] private Color _activatedGlow;
+    [SerializeField] private CameraShakeProfileSO _shakeProfile;
 
     private bool _activated;
 
@@ -46,7 +47,7 @@ public class LunarStone : MonoBehaviour, IInteractable
         _animator.SetTrigger("activate");
         StartCoroutine(LerpLightIntensityCo());
         _spriteRenderer.material.SetColor("_Color", _activatedGlow);
-        CameraManager.Instance.CameraShake(_impulseSource);
+        CameraManager.Instance.CameraShake(_impulseSource, _shakeProfile);
         _activated = true;
         player.GetComponent<PlayerFxController>().Dissolve();
         StartCoroutine(EndLevelCo());

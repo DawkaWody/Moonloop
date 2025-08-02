@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
-[RequireComponent(typeof(SpriteRenderer))]
+
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerMovementController))]
 [RequireComponent(typeof(PlayerFxController))]
@@ -14,8 +14,8 @@ public class PlayerDeathController : MonoBehaviour
     [SerializeField] private Light2D _light;
 
     private Vector3 _lastCheckpoint;
+    private bool _dead;
 
-    private SpriteRenderer _spriteRenderer;
     private Rigidbody2D _rigidbody;
     private PlayerMovementController _movementController;
     private PlayerFxController _fxController;
@@ -24,8 +24,8 @@ public class PlayerDeathController : MonoBehaviour
     void Start()
     {
         _lastCheckpoint = transform.position;
+        _dead = false;
 
-        _spriteRenderer = GetComponent<SpriteRenderer>();
         _rigidbody = GetComponent<Rigidbody2D>();
         _movementController = GetComponent<PlayerMovementController>();
         _fxController = GetComponent<PlayerFxController>();
@@ -33,7 +33,7 @@ public class PlayerDeathController : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.y < _killBound.position.y)
+        if (transform.position.y < _killBound.position.y && !_dead)
         {
             Die();
         }
@@ -46,7 +46,9 @@ public class PlayerDeathController : MonoBehaviour
 
     public void Die()
     {
+        _dead = true;
         _fxController.Dissolve();
+        _fxController.Shake();
         _light.enabled = false;
         _movementController.enabled = false;
         _rigidbody.linearVelocity = Vector2.zero;
@@ -60,5 +62,6 @@ public class PlayerDeathController : MonoBehaviour
         _light.enabled = true;
         _movementController.enabled = true;
         transform.position = _lastCheckpoint;
+        _dead = false;
     }
 }

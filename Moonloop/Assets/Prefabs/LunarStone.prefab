@@ -172,9 +172,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b38b2fe15c4baf44bb705833762c505a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activatedLightIntensity: 1.8
+  _activatedLightIntensity: 2
   _lightIntensityLerpTime: 0.5
-  _activatedGlow: {r: 0, g: 11.984314, b: 11.545098, a: 1}
+  _activatedGlow: {r: 0, g: 8.47419, b: 8.163617, a: 1}
+  _shakeProfile: {fileID: 11400000, guid: b9aac40ca562168418a7675d8b714eef, type: 2}
 --- !u!114 &5485536793212230948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,8 +269,8 @@ MonoBehaviour:
     m_Extent: {x: 0.9985302, y: 0.99853027, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
-  m_PointLightInnerRadius: 0.4
-  m_PointLightOuterRadius: 3.5
+  m_PointLightInnerRadius: 0.5
+  m_PointLightOuterRadius: 4
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1

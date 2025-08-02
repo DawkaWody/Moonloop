@@ -1,14 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 [RequireComponent(typeof(TilemapRenderer))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(ShadowCaster2D))]
 public class Platform : MonoBehaviour
 {
     public PlatformType type;
-    public bool unstable = false;
-    public bool isActive = true;
+    public bool unstable;
+    public bool isActive;
     [SerializeField] private float _breakingTime = 1.0f;
 
     private int _dissolveAmountId = Shader.PropertyToID("_Amount");
@@ -16,12 +18,17 @@ public class Platform : MonoBehaviour
 
     private TilemapRenderer _tilemapRenderer;
     private Collider2D _collider;
+    private ShadowCaster2D _shadowCaster;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _tilemapRenderer = GetComponent<TilemapRenderer>();
         _collider = GetComponent<Collider2D>();
+        _shadowCaster = GetComponent<ShadowCaster2D>();
+
+        unstable = false;
+        isActive = true;
     }
 
     public void Break()
@@ -46,7 +53,11 @@ public class Platform : MonoBehaviour
         while (elapsedTime < _breakingTime)
         {
             elapsedTime += Time.deltaTime;
-            if (elapsedTime > _breakingTime / 2) _collider.isTrigger = to != 0f;
+            if (elapsedTime > _breakingTime / 2)
+            {
+                _collider.isTrigger = to != 0f;
+                _shadowCaster.enabled = to == 0f;
+            }
             _tilemapRenderer.material.SetFloat(_dissolveAmountId, Mathf.Lerp(baseDissolve, to, (elapsedTime / _breakingTime)));
             yield return null;
         }
