@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3050489099688998385}
   - component: {fileID: 106701118221622252}
   - component: {fileID: 4967647387237012088}
+  - component: {fileID: 5233112346708935157}
   - component: {fileID: 1844649405871152275}
   m_Layer: 3
   m_Name: StartPlatform
@@ -429,6 +430,155 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 4, y: 3.9789777}
   m_EdgeRadius: 0
+--- !u!60 &5233112346708935157
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3532582158984807468}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.942269, y: 0.5669415}
+      - {x: 1.9426662, y: 0.6873729}
+      - {x: 2.0043497, y: 0.6795496}
+      - {x: 2.0034623, y: 0.87472683}
+      - {x: 1.9390968, y: 0.8725331}
+      - {x: 1.9411862, y: 0.9319487}
+      - {x: 2.005931, y: 0.9300068}
+      - {x: 2.002985, y: 1.1240543}
+      - {x: 1.9490985, y: 1.1214635}
+      - {x: 1.9449404, y: 1.1875764}
+      - {x: 2.003128, y: 1.1827397}
+      - {x: 2.0018134, y: 1.3748205}
+      - {x: 1.9432764, y: 1.3780814}
+      - {x: 1.9451876, y: 1.5542513}
+      - {x: 2.0026999, y: 1.5545006}
+      - {x: 2.0032694, y: 1.7564304}
+      - {x: 1.9460319, y: 1.7527672}
+      - {x: 1.9393051, y: 1.8174024}
+      - {x: 1.8171288, y: 1.8165312}
+      - {x: 1.8176057, y: 1.8799118}
+      - {x: 1.7620184, y: 1.8809437}
+      - {x: 1.7595661, y: 1.9402194}
+      - {x: 1.5613971, y: 1.9412972}
+      - {x: 1.5643698, y: 2.0098324}
+      - {x: 0, y: 2}
+      - {x: -1.6931463, y: 2.0111456}
+      - {x: -1.6908972, y: 1.9391158}
+      - {x: -1.7509887, y: 1.9383968}
+      - {x: -1.753074, y: 1.8150313}
+      - {x: -1.8149185, y: 1.8134226}
+      - {x: -1.8156372, y: 1.753773}
+      - {x: -1.8745883, y: 1.7533162}
+      - {x: -1.8759564, y: 1.6892179}
+      - {x: -1.9377967, y: 1.6896257}
+      - {x: -1.9390899, y: 1.6284436}
+      - {x: -2.0022216, y: 1.6294056}
+      - {x: -2.0014892, y: 1.3146166}
+      - {x: -1.9406676, y: 1.3138093}
+      - {x: -1.9401157, y: 1.0677253}
+      - {x: -2.000554, y: 1.0667704}
+      - {x: -2.0001435, y: 0.99750984}
+      - {x: -1.939334, y: 0.99784917}
+      - {x: -1.9391651, y: 0.63132894}
+      - {x: -2.003068, y: 0.6275325}
+      - {x: -2.0031455, y: 0.43943894}
+      - {x: -1.9437418, y: 0.43776336}
+      - {x: -1.9403754, y: 0.19082835}
+      - {x: -2.003786, y: 0.19054532}
+      - {x: -2.00114, y: 0.0014481694}
+      - {x: -1.9418453, y: -0.00013065338}
+      - {x: -1.941689, y: -0.3724119}
+      - {x: -2.0045698, y: -0.36892462}
+      - {x: -2.0033894, y: -0.6874428}
+      - {x: -1.941946, y: -0.6907723}
+      - {x: -1.9404353, y: -0.8088042}
+      - {x: -2.0052478, y: -0.8112147}
+      - {x: -2.0040712, y: -1.1259692}
+      - {x: -1.9411374, y: -1.1260154}
+      - {x: -1.9394537, y: -1.1834232}
+      - {x: -2.0020976, y: -1.1862043}
+      - {x: -2.0000167, y: -1.3762174}
+      - {x: -1.9435326, y: -1.3779978}
+      - {x: -1.9430938, y: -1.5581137}
+      - {x: -2.0024161, y: -1.5587473}
+      - {x: -2.0012648, y: -1.7563933}
+      - {x: -1.9416226, y: -1.7563797}
+      - {x: -1.9418416, y: -1.8171337}
+      - {x: -1.8174957, y: -1.8146025}
+      - {x: -1.815227, y: -1.8754444}
+      - {x: -1.7527103, y: -1.8738663}
+      - {x: -1.7548289, y: -1.9390619}
+      - {x: -1.5661354, y: -1.9377968}
+      - {x: -1.5656327, y: -2.005334}
+      - {x: -1.0866101, y: -1.9992926}
+      - {x: 1.6807724, y: -2.0098228}
+      - {x: 1.6862818, y: -1.9444125}
+      - {x: 1.7516612, y: -1.941376}
+      - {x: 1.7528099, y: -1.8199809}
+      - {x: 1.8150953, y: -1.8196307}
+      - {x: 1.8172975, y: -1.7579396}
+      - {x: 1.8741484, y: -1.7579503}
+      - {x: 1.8749135, y: -1.69295}
+      - {x: 1.946333, y: -1.6929587}
+      - {x: 1.9450358, y: -1.6251613}
+      - {x: 2.007958, y: -1.6251476}
+      - {x: 2.006886, y: -1.3084657}
+      - {x: 1.944962, y: -1.3086122}
+      - {x: 1.9395512, y: -1.0653237}
+      - {x: 1.9998041, y: -1.0653043}
+      - {x: 2.003065, y: -0.6858295}
+      - {x: 1.9377308, y: -0.6824093}
+      - {x: 1.9328045, y: -0.5025443}
+      - {x: 2.0041986, y: -0.49717966}
+      - {x: 2.0065126, y: -0.18551528}
+      - {x: 1.9418539, y: -0.18247983}
+      - {x: 1.9392253, y: -0.12953198}
+      - {x: 2.0025697, y: -0.12905431}
+      - {x: 1.9973664, y: 0.1930783}
+      - {x: 1.9426094, y: 0.18725064}
+      - {x: 1.9437348, y: 0.37066072}
+      - {x: 2.0063303, y: 0.3670592}
+      - {x: 2.003903, y: 0.5614843}
+  m_UseDelaunayMesh: 0
 --- !u!114 &1844649405871152275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -457,15 +607,15 @@ MonoBehaviour:
   - {x: 12, y: -5, z: 0}
   m_ShapePathHash: 0
   m_InstanceId: 0
-  m_ShadowShape2DComponent: {fileID: 4967647387237012088}
+  m_ShadowShape2DComponent: {fileID: 5233112346708935157}
   m_ShadowShape2DProvider:
-    rid: 730787157959508122
+    rid: 730787162904592469
   m_ShadowCastingSource: 2
   m_ShadowMesh:
     m_Mesh: {fileID: 0}
     m_LocalBounds:
-      m_Center: {x: 0, y: -0.5, z: 0}
-      m_Extent: {x: 2, y: 0.5, z: 0}
+      m_Center: {x: 0, y: -0.010505676, z: 0}
+      m_Extent: {x: 2, y: 1.9894791, z: 0}
     m_EdgeProcessing: 1
     m_TrimEdge: 0
     m_FlipX: 0
@@ -475,11 +625,11 @@ MonoBehaviour:
   m_PreviousTrimEdge: 0
   m_PreviousEdgeProcessing: 1
   m_PreviousShadowCastingSource: 2
-  m_PreviousShadowShape2DSource: {fileID: 0}
+  m_PreviousShadowShape2DSource: {fileID: 4967647387237012088}
   references:
     version: 2
     RefIds:
-    - rid: 730787157959508122
+    - rid: 730787162904592469
       type: {class: ShadowShape2DProvider_Collider2D, ns: UnityEngine.Rendering.Universal, asm: Unity.RenderPipelines.Universal.2D.Runtime}
       data: 
 --- !u!1 &4080546914339395522
