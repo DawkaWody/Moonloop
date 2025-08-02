@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -26,6 +25,7 @@ public class PlatformManager : MonoBehaviour
     {
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), 1.0f));
         platform.GetComponent<Collider2D>().isTrigger = false;
+        platform.GetComponent<Platform>().isActive = true;
     }
 
     public void Deactivate(Transform platform)
@@ -33,6 +33,7 @@ public class PlatformManager : MonoBehaviour
 
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
         platform.GetComponent<Collider2D>().isTrigger = true;
+        platform.GetComponent<Platform>().isActive = false;
     }
 
     IEnumerator LerpAlphaCo(Tilemap tilemap, float to)

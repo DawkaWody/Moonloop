@@ -8,10 +8,11 @@ public class Platform : MonoBehaviour
 {
     public PlatformType type;
     public bool unstable = false;
+    public bool isActive = true;
     [SerializeField] private float _breakingTime = 1.0f;
-    private bool _broken = false;
 
     private int _dissolveAmountId = Shader.PropertyToID("_Amount");
+    private bool _broken = false;
 
     private TilemapRenderer _tilemapRenderer;
     private Collider2D _collider;
@@ -25,7 +26,7 @@ public class Platform : MonoBehaviour
 
     public void Break()
     {
-        if (!_broken)
+        if (!_broken && isActive && unstable)
             StartCoroutine(BreakCo());
     }
 
@@ -33,7 +34,7 @@ public class Platform : MonoBehaviour
     {
         _broken = true;
         StartCoroutine(DissolveCo(1f));
-        yield return new WaitForSeconds(_breakingTime);
+        yield return new WaitForSeconds(_breakingTime * 2);
         StartCoroutine(DissolveCo(0f));
         _broken = false;
     }
@@ -44,7 +45,8 @@ public class Platform : MonoBehaviour
         float baseDissolve = _tilemapRenderer.material.GetFloat(_dissolveAmountId);
         while (elapsedTime < _breakingTime)
         {
-            if (elapsedTime > _breakingTime / 2) _collider.isTrigger = !_collider.isTrigger;
+            elapsedTime += Time.deltaTime;
+            if (elapsedTime > _breakingTime / 2) _collider.isTrigger = to != 0f;
             _tilemapRenderer.material.SetFloat(_dissolveAmountId, Mathf.Lerp(baseDissolve, to, (elapsedTime / _breakingTime)));
             yield return null;
         }

@@ -31,9 +31,7 @@ public class PlayerInteractController : MonoBehaviour
 
         RaycastHit2D platform = Physics2D.Raycast(transform.position, Vector2.down, _platformDetectionHeight, _groundLayer);
         if (platform.collider && platform.collider.CompareTag("Breakable"))
-        {
             platform.collider.GetComponent<Platform>().Break();
-        }
     }
 
     private void OnDrawGizmosSelected()
