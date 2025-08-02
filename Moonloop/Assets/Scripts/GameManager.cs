@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -55,7 +56,7 @@ public class GameManager : MonoBehaviour
         }
 
         _currentLevel = levelIndex;
-        SceneManager.LoadScene(_levels[levelIndex]);
+        StartCoroutine(LoadLevelFade(_levels[_currentLevel]));
     }
 
     public void EndLevel()
@@ -63,6 +64,13 @@ public class GameManager : MonoBehaviour
         TimeSpan levelTime = Timer.Instance.GetTime();
         if (levelTimes[_currentLevel] == TimeSpan.Zero || levelTime.TotalMilliseconds < levelTimes[_currentLevel].TotalMilliseconds)
             levelTimes[_currentLevel] = levelTime;
-        Debug.Log($"Level finished in {levelTimes[_currentLevel]}. Back to menu...");
+        StartCoroutine(LoadLevelFade(_mainMenu));
+    }
+
+    IEnumerator LoadLevelFade(string level)
+    {
+        Crossfade.Instance.FadeOut();
+        yield return new WaitForSeconds(Crossfade.Instance.fadeDuration);
+        SceneManager.LoadScene(level);
     }
 }

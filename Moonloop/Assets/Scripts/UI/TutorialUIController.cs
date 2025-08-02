@@ -49,7 +49,9 @@ public class TutorialUIController : MonoBehaviour
         StartCoroutine(LerpAlphaCo(_moonBarFocus, 1f));
         yield return new WaitForSeconds(_fadeDuration / 2);
         ActivateGroup(4);
-        yield return new WaitForSeconds(_onScreenDuration);
+        yield return new WaitForSeconds(_onScreenDuration + _fadeDuration);
+        ActivateGroup(5);
+        yield return new WaitForSeconds(_onScreenDuration + _fadeDuration);
         StartCoroutine(LerpAlphaCo(_moonBarFocus, 0f));
         _playerMovementController.enabled = true;
     }

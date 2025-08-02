@@ -1,12 +1,16 @@
+using System.Collections;
 using UnityEngine;
 
 public class MenuManager : MonoBehaviour
 {
     public GameObject planetsCanvas;
+    [SerializeField] private Crossfade _crossfade;
 
-    private void Start()
+    IEnumerator Start()
     {
         SetPlanetInteractivity(false);
+        yield return new WaitForEndOfFrame();
+        _crossfade.initialFadein = true;
     }
 
     public void OnPlayButtonPressed()
