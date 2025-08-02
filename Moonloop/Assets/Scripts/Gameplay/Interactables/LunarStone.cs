@@ -41,12 +41,15 @@ public class LunarStone : MonoBehaviour, IInteractable
     public void Interact(Transform player)
     {
         if (_activated) return;
-        player.GetComponent<PlayerDeathController>().SetCheckpoint(transform);
+        player.GetComponent<PlayerMovementController>().Freeze();
+        Timer.Instance.Stop();
         _animator.SetTrigger("activate");
         StartCoroutine(LerpLightIntensityCo());
         _spriteRenderer.material.SetColor("_Color", _activatedGlow);
         CameraManager.Instance.CameraShake(_impulseSource);
         _activated = true;
+        player.GetComponent<PlayerFxController>().Dissolve();
+        StartCoroutine(EndLevelCo());
     }
 
     IEnumerator LerpLightIntensityCo()
@@ -59,5 +62,11 @@ public class LunarStone : MonoBehaviour, IInteractable
             lerpTimer += Time.deltaTime;
             _light.intensity = Mathf.Lerp(baseIntensity, _activatedLightIntensity, lerpTimer / _lightIntensityLerpTime);
         }
+    }
+
+    IEnumerator EndLevelCo()
+    {
+        yield return new WaitForSeconds(GameManager.Instance.endLevelDelay);
+        GameManager.Instance.EndLevel();
     }
 }

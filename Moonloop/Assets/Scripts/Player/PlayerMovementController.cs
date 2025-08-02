@@ -111,6 +111,13 @@ public class PlayerMovementController : MonoBehaviour
 
     #region Movement
 
+    public void Freeze()
+    {
+        _rigidbody.linearVelocity = Vector2.zero;
+        _animationController.AnimateMovement(false);
+        this.enabled = false;
+    }
+
     private void Move(float acceleration, float decceleration, Vector2 moveInput)
     {
         if (moveInput != Vector2.zero)
