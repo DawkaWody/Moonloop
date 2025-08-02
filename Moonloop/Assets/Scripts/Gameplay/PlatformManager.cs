@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 public class PlatformManager : MonoBehaviour
 {
     [SerializeField] private Platform[] _platforms;
-    [SerializeField] private float _alphaOnInactive = 0.4f;
+    [SerializeField] private float _alphaOnInactive = 0.2f;
     [SerializeField] private float _alphaLerpTime = 0.3f;
 
     private Transform[] _platformTransforms;

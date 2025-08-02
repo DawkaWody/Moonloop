@@ -9,7 +9,7 @@ public class MoonLight : MonoBehaviour
     [SerializeField] private float _radius;
     [SerializeField] private float _phaseDuration = 4.0f;
     [SerializeField] private int _maxPhases;
-    [SerializeField] private bool cycle;
+    public bool cycle;
 
     [Header("References")]
     [SerializeField] private PlatformManager _platformManager;

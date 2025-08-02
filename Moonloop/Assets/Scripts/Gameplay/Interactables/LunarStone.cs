@@ -14,6 +14,7 @@ public class LunarStone : MonoBehaviour, IInteractable
     [ColorUsage(true, true)]
     [SerializeField] private Color _activatedGlow;
     [SerializeField] private CameraShakeProfileSO _shakeProfile;
+    [SerializeField] private MoonLight _moonLight;
 
     private bool _activated;
 
@@ -50,6 +51,7 @@ public class LunarStone : MonoBehaviour, IInteractable
         CameraManager.Instance.CameraShake(_impulseSource, _shakeProfile);
         _activated = true;
         player.GetComponent<PlayerFxController>().Dissolve();
+        _moonLight.cycle = false;
         StartCoroutine(EndLevelCo());
     }
 
