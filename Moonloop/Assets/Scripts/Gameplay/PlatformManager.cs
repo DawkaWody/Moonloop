@@ -39,19 +39,8 @@ public class PlatformManager : MonoBehaviour
         var shadow = platform.GetComponent<ShadowCaster2D>();
         if (shadow != null) shadow.enabled = true;
 
-        var platformComponent = platform.GetComponent<Platform>();
-        if (platformComponent != null)
-        {
-            platformComponent.isActive = true;
-
-            if (platformComponent.type == PlatformType.Dark)
-            {
-                var light = platform.GetComponentInChildren<Light2D>();
-                if (light != null) light.enabled = true;
-            }
-        }
-
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), 1.0f));
+        platform.GetComponent<Platform>().isActive = true;
     }
 
     public void Deactivate(Transform platform)
@@ -61,18 +50,8 @@ public class PlatformManager : MonoBehaviour
         var shadow = platform.GetComponent<ShadowCaster2D>();
         if (shadow != null) shadow.enabled = false;
 
-        var platformComponent = platform.GetComponent<Platform>();
-        if (platformComponent != null)
-        {
-            platformComponent.isActive = false;
-
-            if (platformComponent.type == PlatformType.Dark)
-            {
-                var light = platform.GetComponentInChildren<Light2D>();
-                if (light != null) light.enabled = false;
-            }
-        }
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
+        platform.GetComponent<Platform>().isActive = false;
     }
 
     public void SetPlatformState(Platform platform, bool active)
