@@ -9,15 +9,19 @@ public class PlatformManager : MonoBehaviour
     [SerializeField] private float _alphaLerpTime = 0.3f;
 
     private Transform[] _platformTransforms;
+    private ArrayList _darkPlatforms;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         _platformTransforms = new Transform[_platforms.Length];
+        _darkPlatforms = new ArrayList();
         for (int i = 0; i < _platforms.Length; i++)
         {
             _platformTransforms[i] = _platforms[i].transform;
             Deactivate(_platformTransforms[i]);
+            if (_platforms[i].type == PlatformType.Dark)
+                _darkPlatforms.Add(_platforms[i]);
         }
     }
 
@@ -34,6 +38,15 @@ public class PlatformManager : MonoBehaviour
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
         platform.GetComponent<Collider2D>().isTrigger = true;
         platform.GetComponent<Platform>().isActive = false;
+    }
+
+    public void ActivateDarkPlatforms()
+    {
+        foreach (Platform platform in _darkPlatforms)
+        {
+            if (!platform.isActive)
+                Activate(platform.transform);
+        }
     }
 
     IEnumerator LerpAlphaCo(Tilemap tilemap, float to)

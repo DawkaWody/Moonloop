@@ -73,6 +73,7 @@ public class MoonLight : MonoBehaviour
 
     private void LightDetection()
     {
+        _platformManager.ActivateDarkPlatforms();
         foreach (Collider2D platform in Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius,
                      _platformLayer))
         {
@@ -93,7 +94,8 @@ public class MoonLight : MonoBehaviour
                 foreach (RaycastHit2D hit in hitAll)
                 {
                     Collider2D hitCollider = hit.collider;
-                    if (hitCollider != null && hitCollider.transform != platform.transform) blockedByObstacle = true;
+                    if (hitCollider && hitCollider.transform != platform.transform)
+                        blockedByObstacle = !hitCollider.TryGetComponent(out Platform pd) || pd.isActive;
                 }
                 
                 if (!blockedByObstacle) // Lit
