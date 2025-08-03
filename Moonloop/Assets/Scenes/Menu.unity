@@ -1759,6 +1759,7 @@ MonoBehaviour:
   - Level 3
   - Level 4
   _mainMenu: Menu
+  _endGame: End
   _musicManager: {fileID: 43186972}
   endLevelDelay: 2
   fadeMenu: 0

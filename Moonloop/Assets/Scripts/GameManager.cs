@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,12 +10,14 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private string[] _levels;
     [SerializeField] private string _mainMenu;
+    [SerializeField] private string _endGame;
     [SerializeField] private MusicManager _musicManager;
     public float endLevelDelay = 2.0f;
     public TimeSpan[] levelTimes;
     public bool fadeMenu;
 
     private int _currentLevel;
+    private bool _shownEndGame;
 
     private void Awake()
     {
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
         levelTimes = new TimeSpan[_levels.Length];
         _currentLevel = 0;
         fadeMenu = false;
+        _shownEndGame = false;
         SceneManager.sceneLoaded += OnSceneLoad;
     }
 
@@ -68,6 +72,24 @@ public class GameManager : MonoBehaviour
         if (levelTimes[_currentLevel] == TimeSpan.Zero || levelTime.TotalMilliseconds < levelTimes[_currentLevel].TotalMilliseconds)
             levelTimes[_currentLevel] = levelTime;
         fadeMenu = true;
+        if (levelTimes.Any(time => time == TimeSpan.Zero))
+        {
+            StartCoroutine(LoadLevelFade(_mainMenu));
+            return;
+        }
+        if (!_shownEndGame)
+        {
+            _shownEndGame = true;
+            StartCoroutine(LoadLevelFade(_endGame));
+        }
+        else
+        {
+            StartCoroutine(LoadLevelFade(_mainMenu));
+        }
+    }
+
+    public void ToMenuFromEnd()
+    {
         StartCoroutine(LoadLevelFade(_mainMenu));
     }
 
@@ -81,7 +103,7 @@ public class GameManager : MonoBehaviour
 
     public void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == _mainMenu) _musicManager.PlayMenuMusic();
+        if (scene.name == _mainMenu || scene.name == _endGame) _musicManager.PlayMenuMusic();
         else _musicManager.PlayGameMusic();
 
 
