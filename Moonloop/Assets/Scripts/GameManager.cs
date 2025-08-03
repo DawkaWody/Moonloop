@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private string _mainMenu;
     public float endLevelDelay = 2.0f;
     public TimeSpan[] levelTimes;
+    public bool fadeMenu;
 
     private int _currentLevel;
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     {
         levelTimes = new TimeSpan[_levels.Length];
         _currentLevel = 0;
+        fadeMenu = false;
     }
 
     public bool IsLevelUnlocked(int levelIndex)
@@ -54,7 +56,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Invalid level index: " + levelIndex);
             return;
         }
-
+        fadeMenu = false;
         _currentLevel = levelIndex;
         StartCoroutine(LoadLevelFade(_levels[_currentLevel]));
     }
@@ -64,6 +66,7 @@ public class GameManager : MonoBehaviour
         TimeSpan levelTime = Timer.Instance.GetTime();
         if (levelTimes[_currentLevel] == TimeSpan.Zero || levelTime.TotalMilliseconds < levelTimes[_currentLevel].TotalMilliseconds)
             levelTimes[_currentLevel] = levelTime;
+        fadeMenu = true;
         StartCoroutine(LoadLevelFade(_mainMenu));
     }
 

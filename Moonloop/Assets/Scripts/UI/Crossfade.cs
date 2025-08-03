@@ -19,7 +19,7 @@ public class Crossfade : MonoBehaviour
 
     void Start()
     {
-        if (initialFadein)
+        if (initialFadein || GameManager.Instance.fadeMenu)
         {
             _overlay.alpha = 1f;
             FadeIn();

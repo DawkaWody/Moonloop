@@ -724,6 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levels:
   - TutorialLevel
+  - Level 1
   _mainMenu: Menu
   endLevelDelay: 2
 --- !u!4 &1477779805

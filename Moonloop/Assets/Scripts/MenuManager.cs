@@ -4,13 +4,10 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     public GameObject planetsCanvas;
-    [SerializeField] private Crossfade _crossfade;
 
-    IEnumerator Start()
+    void Start()
     {
         SetPlanetInteractivity(false);
-        yield return new WaitForEndOfFrame();
-        _crossfade.initialFadein = true;
     }
 
     public void OnPlayButtonPressed()
