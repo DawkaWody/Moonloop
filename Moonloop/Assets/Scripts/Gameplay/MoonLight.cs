@@ -94,8 +94,9 @@ public class MoonLight : MonoBehaviour
                 foreach (RaycastHit2D hit in hitAll)
                 {
                     Collider2D hitCollider = hit.collider;
-                    if (hitCollider && hitCollider.transform != platform.transform)
-                        blockedByObstacle = !hitCollider.TryGetComponent(out Platform pd) || pd.isActive;
+                    if (!hitCollider || hitCollider.transform == platform.transform) continue;
+                    blockedByObstacle = !hitCollider.TryGetComponent(out Platform pd) || pd.isActive;
+                    if (blockedByObstacle) break;
                 }
                 
                 if (!blockedByObstacle) // Lit

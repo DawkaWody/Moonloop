@@ -339,6 +339,9 @@ public class PlayerMovementController : MonoBehaviour
         if (_groundHit.collider)
         {
             _isGrounded = true;
+            if (_groundHit.collider.TryGetComponent(out Platform pd))
+                _isGrounded = pd.isActive;
+
             if (_animationController.IsInAirOrJumping() && _inAirTimer > 0f)
             {
                 _animationController.Land();
