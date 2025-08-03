@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -19,6 +20,9 @@ public class MoonLight : MonoBehaviour
     [SerializeField] private Light2D _light;
     [SerializeField] private LayerMask _platformLayer;
     [SerializeField] private Transform _excludedPlatforms;
+    [SerializeField] private float _lightFadeDuration = 1.0f;
+    [SerializeField] private Transform _groundLeftCorner;
+    [SerializeField] private Transform _groundRightCorner;
 
     private int _currentPhase;
     private float _phaseTimer;
@@ -40,7 +44,8 @@ public class MoonLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        LightDetection();
+        ActivateLit();
+        LightCollision();
         if (!cycle) return;
         PhaseTimer();
         Orbit();
@@ -71,7 +76,7 @@ public class MoonLight : MonoBehaviour
         _moonBar.SetIcon(_currentPhase);
     }
 
-    private void LightDetection()
+    private void ActivateLit()
     {
         _platformManager.ActivateDarkPlatforms();
         foreach (Collider2D platform in Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius,
@@ -121,6 +126,31 @@ public class MoonLight : MonoBehaviour
                 else
                     _platformManager.Activate(platform.transform);
             }
+        }
+    }
+
+    private void LightCollision()
+    {
+        if (transform.position.x > _groundLeftCorner.position.x &&
+            transform.position.x < _groundRightCorner.position.x &&
+            transform.position.y < _groundLeftCorner.position.y)
+        {
+            if (_light.intensity == 1f)
+                StartCoroutine(LerpIntensityCo(_light, 0f));
+        }
+        else if (_light.intensity == 0)
+            StartCoroutine(LerpIntensityCo(_light, 1f));
+    }
+
+    IEnumerator LerpIntensityCo(Light2D light, float to)
+    {
+        float elapsedTime = 0f;
+        float baseIntensity = light.intensity;
+        while (elapsedTime < _lightFadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            light.intensity = Mathf.Lerp(baseIntensity, to, elapsedTime);
+            yield return null;
         }
     }
 
