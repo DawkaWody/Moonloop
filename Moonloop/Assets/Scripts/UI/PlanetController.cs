@@ -2,16 +2,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System;
 
 public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public int levelIndex;
 
-    public Image planetImage;
-    public Sprite nonInteractiveSprite;
-    public Sprite unlockedSprite;
-    public Sprite lockedSprite;
-    public Sprite hoverSprite;
+    [SerializeField] private TextMeshProUGUI bestTimeText;
+    [SerializeField] private Image planetImage;
+    [SerializeField] private Sprite nonInteractiveSprite;
+    [SerializeField] private Sprite unlockedSprite;
+    [SerializeField] private Sprite lockedSprite;
+    [SerializeField] private Sprite hoverSprite;
 
     private bool isInteractable;
 
@@ -24,6 +26,7 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (!interactive)
         {
             planetImage.sprite = nonInteractiveSprite;
+            bestTimeText.gameObject.SetActive(false);
         }
         else
         {
@@ -38,6 +41,14 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (isInteractable && GameManager.Instance.IsLevelUnlocked(levelIndex))
         {
             planetImage.sprite = hoverSprite;
+
+            TimeSpan bestTime = GameManager.Instance.levelTimes[levelIndex];
+            if (bestTime != TimeSpan.Zero)
+                bestTimeText.text = $"Best: {bestTime:mm\\:ss\\.fff}";
+            else
+                bestTimeText.text = "--:--.---";
+
+            bestTimeText.gameObject.SetActive(true);
         }
     }
 
@@ -46,6 +57,8 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
         if (isInteractable && GameManager.Instance.IsLevelUnlocked(levelIndex))
         {
             planetImage.sprite = unlockedSprite;
+
+            bestTimeText.gameObject.SetActive(false);
         }
     }
 
