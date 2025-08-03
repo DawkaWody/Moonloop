@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.Tilemaps;
 
 public class PlatformManager : MonoBehaviour
@@ -9,44 +10,56 @@ public class PlatformManager : MonoBehaviour
     [SerializeField] private float _alphaLerpTime = 0.3f;
 
     private Transform[] _platformTransforms;
-    private ArrayList _darkPlatforms;
+    private int _activePlatformLayer;
+    private int _inactivePlatformLayer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public Platform[] AllPlatforms => _platforms;
+
+    void Awake()
+    {
+        _activePlatformLayer = LayerMask.NameToLayer("Ground");
+        _inactivePlatformLayer = LayerMask.NameToLayer("PlatformInactive");
+    }
+
     void Start()
     {
         _platformTransforms = new Transform[_platforms.Length];
-        _darkPlatforms = new ArrayList();
+
         for (int i = 0; i < _platforms.Length; i++)
         {
             _platformTransforms[i] = _platforms[i].transform;
             Deactivate(_platformTransforms[i]);
-            if (_platforms[i].type == PlatformType.Dark)
-                _darkPlatforms.Add(_platforms[i]);
         }
     }
 
     public void Activate(Transform platform)
     {
+        platform.gameObject.layer = _activePlatformLayer;
+
+        var shadow = platform.GetComponent<ShadowCaster2D>();
+        if (shadow != null) shadow.enabled = true;
+
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), 1.0f));
-        platform.GetComponent<Collider2D>().isTrigger = false;
         platform.GetComponent<Platform>().isActive = true;
     }
 
     public void Deactivate(Transform platform)
     {
+        platform.gameObject.layer = _inactivePlatformLayer;
+
+        var shadow = platform.GetComponent<ShadowCaster2D>();
+        if (shadow != null) shadow.enabled = false;
 
         StartCoroutine(LerpAlphaCo(platform.GetComponent<Tilemap>(), _alphaOnInactive));
-        platform.GetComponent<Collider2D>().isTrigger = true;
         platform.GetComponent<Platform>().isActive = false;
     }
 
-    public void ActivateDarkPlatforms()
+    public void SetPlatformState(Platform platform, bool active)
     {
-        foreach (Platform platform in _darkPlatforms)
-        {
-            if (!platform.isActive)
-                Activate(platform.transform);
-        }
+        if (active && !platform.isActive)
+            Activate(platform.transform);
+        else if (!active && platform.isActive)
+            Deactivate(platform.transform);
     }
 
     IEnumerator LerpAlphaCo(Tilemap tilemap, float to)
@@ -62,3 +75,4 @@ public class PlatformManager : MonoBehaviour
         }
     }
 }
+

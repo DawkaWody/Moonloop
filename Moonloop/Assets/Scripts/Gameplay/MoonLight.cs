@@ -44,7 +44,7 @@ public class MoonLight : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ActivateLit();
+        UpdatePlatformsByLight();
         LightCollision();
         if (!cycle) return;
         PhaseTimer();
@@ -76,57 +76,52 @@ public class MoonLight : MonoBehaviour
         _moonBar.SetIcon(_currentPhase);
     }
 
-    private void ActivateLit()
+    private void UpdatePlatformsByLight()
     {
-        _platformManager.ActivateDarkPlatforms();
-        foreach (Collider2D platform in Physics2D.OverlapCircleAll(transform.position, _light.pointLightOuterRadius,
-                     _platformLayer))
+        foreach (Platform platform in _platformManager.AllPlatforms)
         {
-            if (platform.transform == _excludedPlatforms || platform.transform.IsChildOf(_excludedPlatforms)) continue;
-            
-            Platform platformData = platform.GetComponent<Platform>();
-            if (!platformData) continue;
-            platformData.unstable = _currentPhase is 0 or 2;
-
-            Vector3 direction = platform.transform.position - transform.position;
-            if (Vector3.Angle(transform.up, direction) <= _light.pointLightOuterAngle / 2)
-            {
-                Debug.DrawRay(transform.position, direction.normalized * direction.magnitude, Color.green);
-                
-                bool blockedByObstacle = false;
-                RaycastHit2D[] hitAll = Physics2D.RaycastAll(transform.position, direction.normalized, 
-                    direction.magnitude, _platformLayer);
-                foreach (RaycastHit2D hit in hitAll)
-                {
-                    Collider2D hitCollider = hit.collider;
-                    if (!hitCollider || hitCollider.transform == platform.transform) continue;
-                    blockedByObstacle = !hitCollider.TryGetComponent(out Platform pd) || pd.isActive;
-                    if (blockedByObstacle) break;
-                }
-                
-                if (!blockedByObstacle) // Lit
-                {
-                    if (platformData.type == PlatformType.Light)
-                        _platformManager.Activate(platform.transform);
-                    else
-                        _platformManager.Deactivate(platform.transform);
-                }
-                else // Unlit
-                {
-                    if (platformData.type == PlatformType.Light)
-                        _platformManager.Deactivate(platform.transform);
-                    else
-                        _platformManager.Activate(platform.transform);
-                }
-            }
-            else // Unlit
-            {
-                if (platformData.type == PlatformType.Light)
-                    _platformManager.Deactivate(platform.transform);
-                else
-                    _platformManager.Activate(platform.transform);
-            }
+            if (!platform) continue;
+            platform.unstable = _currentPhase is 0 or 2;
+            TryUpdatePlatformLighting(platform);
         }
+    }
+
+    private void TryUpdatePlatformLighting(Platform platform)
+    {
+        Transform pt = platform.transform;
+
+        if (_excludedPlatforms && (pt == _excludedPlatforms || pt.IsChildOf(_excludedPlatforms)))
+            return;
+
+        Vector3 direction = pt.position - transform.position;
+        float angleTo = Vector3.Angle(transform.up, direction);
+        float distance = direction.magnitude;
+
+        bool isLit = false;
+
+        if (angleTo <= _light.pointLightOuterAngle / 2 && distance <= _light.pointLightOuterRadius)
+        {
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction.normalized, distance, _platformLayer);
+            bool blocked = false;
+            foreach (var hit in hits)
+            {
+                if (hit.collider.transform == pt) continue;
+
+                Platform blockingPlatform = hit.collider.GetComponent<Platform>();
+                if (blockingPlatform == null || blockingPlatform.isActive)
+                {
+                    blocked = true;
+                    break;
+                }
+            }
+
+            isLit = !blocked;
+        }
+
+        if (platform.type == PlatformType.Light)
+            _platformManager.SetPlatformState(platform, isLit);
+        else
+            _platformManager.SetPlatformState(platform, !isLit);
     }
 
     private void LightCollision()
@@ -168,3 +163,4 @@ public class MoonLight : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + transform.up * _light.pointLightOuterRadius);
     }
 }
+
