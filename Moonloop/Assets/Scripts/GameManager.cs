@@ -36,8 +36,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsLevelUnlocked(int levelIndex)
     {
-        if (levelIndex == 0) return true;
-        return PlayerPrefs.GetInt("Level_" + levelIndex, 0) == 1;
+        return true;
     }
 
     public void UnlockLevel(int levelIndex)

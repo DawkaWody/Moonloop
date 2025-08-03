@@ -21,19 +21,17 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
     {
         isInteractable = interactive;
 
-        bool unlocked = GameManager.Instance.IsLevelUnlocked(levelIndex);
-
         if (!interactive)
         {
             planetImage.sprite = nonInteractiveSprite;
             bestTimeText.gameObject.SetActive(false);
+            GetComponent<Button>().interactable = false;
         }
         else
         {
-            planetImage.sprite = unlocked ? unlockedSprite : lockedSprite;
+            planetImage.sprite = unlockedSprite;
+            GetComponent<Button>().interactable = true;
         }
-
-        GetComponent<Button>().interactable = unlocked && interactive;
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -54,7 +52,7 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (isInteractable && GameManager.Instance.IsLevelUnlocked(levelIndex))
+        if (isInteractable)
         {
             planetImage.sprite = unlockedSprite;
 
@@ -64,7 +62,7 @@ public class PlanetController : MonoBehaviour, IPointerEnterHandler, IPointerExi
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (isInteractable && GameManager.Instance.IsLevelUnlocked(levelIndex))
+        if (isInteractable)
         {
             GameManager.Instance.StartLevel(levelIndex);
         }
