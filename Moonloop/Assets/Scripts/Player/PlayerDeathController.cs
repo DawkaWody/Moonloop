@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerMovementController))]
 [RequireComponent(typeof(PlayerFxController))]
+[RequireComponent(typeof(PlayerSoundController))]
 public class PlayerDeathController : MonoBehaviour
 {
     [SerializeField] private float _respawnTime;
@@ -19,6 +20,7 @@ public class PlayerDeathController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private PlayerMovementController _movementController;
     private PlayerFxController _fxController;
+    private PlayerSoundController _soundController;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,6 +31,7 @@ public class PlayerDeathController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
         _movementController = GetComponent<PlayerMovementController>();
         _fxController = GetComponent<PlayerFxController>();
+        _soundController = GetComponent<PlayerSoundController>();
     }
 
     void Update()
@@ -49,6 +52,7 @@ public class PlayerDeathController : MonoBehaviour
         _dead = true;
         _fxController.Dissolve();
         _fxController.Shake();
+        _soundController.PlayDeathSound();
         _light.enabled = false;
         _movementController.enabled = false;
         _rigidbody.linearVelocity = Vector2.zero;
@@ -59,6 +63,7 @@ public class PlayerDeathController : MonoBehaviour
     {
         yield return new WaitForSeconds(_respawnTime);
         _fxController.Respawn();
+        _soundController.PlayRespawnSound();
         _light.enabled = true;
         _movementController.enabled = true;
         transform.position = _lastCheckpoint;

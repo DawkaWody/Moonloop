@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PlayerInputHandler))]
 [RequireComponent(typeof(PlayerAnimationController))]
+[RequireComponent(typeof(PlayerSoundController))]
 public class PlayerMovementController : MonoBehaviour
 {
     #region Variables
@@ -47,6 +48,7 @@ public class PlayerMovementController : MonoBehaviour
 
     private Rigidbody2D _rigidbody;
     private PlayerAnimationController _animationController;
+    private PlayerSoundController _soundController;
     private PlayerInputHandler _inputHandler;
 
     // before start of the game
@@ -58,6 +60,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody2D>();
         _animationController = GetComponent<PlayerAnimationController>();
+        _soundController = GetComponent<PlayerSoundController>();
         _inputHandler = GetComponent<PlayerInputHandler>();
 
         isFacingRight = true;
@@ -247,6 +250,8 @@ public class PlayerMovementController : MonoBehaviour
         _jumpBufferTimer = 0f;
         _numberOfJumpsUsed += numberOfJumps;
         _verticalVelocity = _movementStats.InitialJumpVelocity;
+
+        _soundController.PlayJumpSound();
     }
 
     private void Jump()

@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 [RequireComponent(typeof(TilemapRenderer))]
 [RequireComponent(typeof(Collider2D))]
 [RequireComponent(typeof(ShadowCaster2D))]
+[RequireComponent(typeof(AudioSource))]
 public class Platform : MonoBehaviour
 {
     public PlatformType type;
@@ -19,6 +20,7 @@ public class Platform : MonoBehaviour
     private TilemapRenderer _tilemapRenderer;
     private Collider2D _collider;
     private ShadowCaster2D _shadowCaster;
+    private AudioSource _audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +28,7 @@ public class Platform : MonoBehaviour
         _tilemapRenderer = GetComponent<TilemapRenderer>();
         _collider = GetComponent<Collider2D>();
         _shadowCaster = GetComponent<ShadowCaster2D>();
+        _audioSource = GetComponent<AudioSource>();
 
         unstable = false;
         isActive = true;
@@ -40,6 +43,7 @@ public class Platform : MonoBehaviour
     IEnumerator BreakCo()
     {
         _broken = true;
+        _audioSource.Play();
         StartCoroutine(DissolveCo(1f));
         yield return new WaitForSeconds(_breakingTime * 2);
         StartCoroutine(DissolveCo(0f));

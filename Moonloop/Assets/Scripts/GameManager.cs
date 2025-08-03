@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private string[] _levels;
     [SerializeField] private string _mainMenu;
+    [SerializeField] private MusicManager _musicManager;
     public float endLevelDelay = 2.0f;
     public TimeSpan[] levelTimes;
     public bool fadeMenu;
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
         levelTimes = new TimeSpan[_levels.Length];
         _currentLevel = 0;
         fadeMenu = false;
+        SceneManager.sceneLoaded += OnSceneLoad;
     }
 
     public bool IsLevelUnlocked(int levelIndex)
@@ -72,7 +74,17 @@ public class GameManager : MonoBehaviour
     IEnumerator LoadLevelFade(string level)
     {
         Crossfade.Instance.FadeOut();
+        _musicManager.LerpVolume(Crossfade.Instance.fadeDuration, 0f);
         yield return new WaitForSeconds(Crossfade.Instance.fadeDuration);
         SceneManager.LoadScene(level);
+    }
+
+    public void OnSceneLoad(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == _mainMenu) _musicManager.PlayMenuMusic();
+        else _musicManager.PlayGameMusic();
+
+
+        _musicManager.LerpVolume(Crossfade.Instance.fadeDuration, 1f);
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 [RequireComponent(typeof(Light2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CinemachineImpulseSource))]
+[RequireComponent(typeof(AudioSource))]
 public class LunarStone : MonoBehaviour, IInteractable
 {
     [SerializeField] private float _activatedLightIntensity = 2f;
@@ -22,6 +23,7 @@ public class LunarStone : MonoBehaviour, IInteractable
     private Light2D _light;
     private SpriteRenderer _spriteRenderer;
     private CinemachineImpulseSource _impulseSource;
+    private AudioSource _audioSource;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,12 +34,7 @@ public class LunarStone : MonoBehaviour, IInteractable
         _light = GetComponent<Light2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
         _impulseSource = GetComponent<CinemachineImpulseSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        _audioSource = GetComponent<AudioSource>();
     }
 
     public void Interact(Transform player)
@@ -48,6 +45,7 @@ public class LunarStone : MonoBehaviour, IInteractable
         _animator.SetTrigger("activate");
         StartCoroutine(LerpLightIntensityCo());
         _spriteRenderer.material.SetColor("_Color", _activatedGlow);
+        _audioSource.Play();
         CameraManager.Instance.CameraShake(_impulseSource, _shakeProfile);
         _activated = true;
         player.GetComponent<PlayerFxController>().Dissolve();
