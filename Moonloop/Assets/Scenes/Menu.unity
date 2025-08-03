@@ -1123,6 +1123,9 @@ MonoBehaviour:
   _levels:
   - TutorialLevel
   - Level 1
+  - Level 2
+  - Level 3
+  - Level 4
   _mainMenu: Menu
   endLevelDelay: 2
   fadeMenu: 0
