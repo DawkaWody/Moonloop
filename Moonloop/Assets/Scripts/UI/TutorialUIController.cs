@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class TutorialUIController : MonoBehaviour
 {
@@ -19,9 +17,6 @@ public class TutorialUIController : MonoBehaviour
     [SerializeField] private float _onScreenDuration = 1.8f;
     [SerializeField] private PlayerMovementController _playerMovementController;
 
-    private Queue<IEnumerator> _messageQueue = new Queue<IEnumerator>();
-    private bool _isDisplayingMessage = false;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,54 +28,35 @@ public class TutorialUIController : MonoBehaviour
         _unstable.alpha = 0f;
         _darkPlatforms.alpha = 0f;
         _levelEnding.alpha = 0f;
-        _timerFocus.alpha = 0f;
-        _moonBarFocus.alpha = 0f;
 
-        Enqueue(ActivateGroupCo(_controls));
-        StartCoroutine(ProcessQueue());
+        ActivateGroup(1);
     }
 
     public void UiTour()
     {
-        _messageQueue.Enqueue(UiTourCo());
-        if (!_isDisplayingMessage)
-            StartCoroutine(ProcessQueue());
-    }
-
-    void Enqueue(IEnumerator coroutine)
-    {
-        _messageQueue.Enqueue(coroutine);
-    }
-
-    public void ActivateGroup(int groupId)
-    {
-        Enqueue(ActivateGroupById(groupId));
-        if (!_isDisplayingMessage)
-            StartCoroutine(ProcessQueue());
-    }
-
-    IEnumerator ProcessQueue()
-    {
-        _isDisplayingMessage = true;
-        while (_messageQueue.Count > 0)
-        {
-            yield return StartCoroutine(_messageQueue.Dequeue());
-        }
-        _isDisplayingMessage = false;
+        StartCoroutine(UiTourCo());
     }
 
     IEnumerator UiTourCo()
     {
         _playerMovementController.Freeze();
-
-        yield return StartCoroutine(ActivateGroupWithFocus(_timerFocus, _timer));
-        yield return StartCoroutine(ActivateGroupWithFocus(_moonBarFocus, _moonBar));
-        yield return StartCoroutine(ActivateGroupCo(_unstable));
-
+        StartCoroutine(LerpAlphaCo(_timerFocus, 1f));
+        yield return new WaitForSeconds(_fadeDuration / 2);
+        ActivateGroup(3);
+        yield return new WaitForSeconds(_onScreenDuration);
+        StartCoroutine(LerpAlphaCo(_timerFocus, 0f));
+        yield return new WaitForSeconds(_fadeDuration);
+        StartCoroutine(LerpAlphaCo(_moonBarFocus, 1f));
+        yield return new WaitForSeconds(_fadeDuration / 2);
+        ActivateGroup(4);
+        yield return new WaitForSeconds(_onScreenDuration + _fadeDuration);
+        ActivateGroup(5);
+        yield return new WaitForSeconds(_onScreenDuration + _fadeDuration);
+        StartCoroutine(LerpAlphaCo(_moonBarFocus, 0f));
         _playerMovementController.enabled = true;
     }
 
-    IEnumerator ActivateGroupById(int groupId)
+    public void ActivateGroup(int groupId)
     {
         CanvasGroup group = groupId switch
         {
@@ -94,25 +70,14 @@ public class TutorialUIController : MonoBehaviour
             7 => _levelEnding,
             _ => null
         };
-
-        if (group != null)
-            yield return StartCoroutine(ActivateGroupCo(group));
+        StartCoroutine(ActivateGroupCo(group));
     }
 
     IEnumerator ActivateGroupCo(CanvasGroup group)
     {
-        yield return StartCoroutine(LerpAlphaCo(group, 1f));
+        StartCoroutine(LerpAlphaCo(group, 1f));
         yield return new WaitForSeconds(_onScreenDuration);
-        yield return StartCoroutine(LerpAlphaCo(group, 0f));
-    }
-
-    IEnumerator ActivateGroupWithFocus(CanvasGroup focus, CanvasGroup group)
-    {
-        yield return StartCoroutine(LerpAlphaCo(focus, 1f));
-        yield return new WaitForSeconds(_fadeDuration / 2f);
-        yield return StartCoroutine(ActivateGroupCo(group));
-        yield return StartCoroutine(LerpAlphaCo(focus, 0f));
-        yield return new WaitForSeconds(_fadeDuration / 2f);
+        StartCoroutine(LerpAlphaCo(group, 0f));
     }
 
     IEnumerator LerpAlphaCo(CanvasGroup group, float to)
@@ -122,9 +87,8 @@ public class TutorialUIController : MonoBehaviour
         while (elapsedTime < _fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            group.alpha = Mathf.Lerp(baseAlpha, to, elapsedTime / _fadeDuration);
+            group.alpha = Mathf.Lerp(baseAlpha, to, elapsedTime);
             yield return null;
         }
-        group.alpha = to;
     }
 }
